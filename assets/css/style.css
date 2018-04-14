@@ -1,0 +1,10 @@
+/* Basic Styles */
+html, body {
+    height: 100%
+}
+body {
+    background-image: url('../img/baby.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: left top;
+}

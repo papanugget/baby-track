@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <nav class="teal">
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo center">Baby Trackr</a>
+            <ul id="nav-mobile" class="right">
+                <li><a href="#" class="waves-effect waves-light btn red lighten-3 clear-btn"><i class="material-icons left">delete_forever</i>Clear All</a></li>
+            </ul>
+        </div>
+    </nav>
+    <br>
+    <div class="container">
+        <!-- form card -->
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Track Your Baby's I/O</span>
+                <form class="call">
+                    <div class="row">
+                        <div class="input-field col s6">
+                                <input type="text" class="datepicker" id="date">
+                            <label for="date">Date</label>
+                        </div>
+                        <div class="input-field col s6">
+                                <input type="text" class="timepicker" id="time">
+                            <label for="time">Time</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s2">
+                            <label for="formula">
+                                <input type="checkbox" id="formula"/>
+                                <span>🍼</span>
+                                <span class="type">Formula</span>
+                            </label>
+                        </div>
+                        <div class="input-field col s2">
+                            <input type="number" min="0" id="formulaAmt">
+                            <label for="formulaAmt">Amount</label>
+                        </div>
+                        <div class="input-field col s2">
+                            <select for="formulaMeasurement">
+                                <option value="oz" id="bottleOz">Ounces</option>
+                                <option value="ml" id="bottleMl">Milliliters</option>
+                            </select>
+                            <label>Measurement</label>
+                        </div>
+                        <div class="input-field col s2">
+                            <label for="breast">
+                                <input type="checkbox" id="breast"/>
+                                <span>( . Y . )</span>
+                                <span class="type">Breast Milk</span>
+                            </label>
+                        </div>
+                        <div class="input-field col s2">
+                            <input type="number" min="0" id="breastAmt">
+                            <label for="breastAmt">Amount</label>
+                        </div>
+                        <div class="input-field col s2">
+                            <select for="breastMeasurement">
+                                <option value="oz" id="breastOz">Ounces</option>
+                                <option value="ml" id="breastMl">Milliliters</option>
+                            </select>
+                            <label>Measurement</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s2">
+                            <label for="pee">
+                                <input type="checkbox" id="pee"/>
+                                <span>💦</span>
+                                <span class="type">Pee</span>
+                            </label>
+                        </div>
+                        <div class="input-field col s2">
+                            <label for="poop">
+                                <input type="checkbox" id="poop"/>
+                                <span>💩</span>
+                                <span class="type">Poop</span>
+                            </label>
+                        </div>
+                        <div class="input-field col s4">
+                            <a href="#" class="waves-effect waves-light btn red reset">Reset  <i class="material-icons right">clear_all</i></a>
+                        </div>
+                        <div class="input-field col s4">
+                            <a href="#" class="waves-effect waves-light btn add-btn ">Submit  <i class="material-icons right">send</i></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div> <!-- end form card -->
+        <div class="output">
+
+        </div>
+    </div>  <!-- end container -->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <script src="./assets/js/app.js"></script>
+</body>
+</html>
