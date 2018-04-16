@@ -24,7 +24,7 @@
         <div class="card">
             <div class="card-content">
                 <span class="card-title">Track Your Baby's I/O</span>
-                <form class="call">
+                <form id="feed-form">
                     <div class="row">
                         <div class="input-field col s6">
                                 <input type="text" class="datepicker" id="date">
@@ -48,7 +48,7 @@
                             <label for="formulaAmt">Amount</label>
                         </div>
                         <div class="input-field col s2">
-                            <select for="formulaMeasurement">
+                            <select for="formulaMeasurement" id="formulaMeasure">
                                 <option value="oz" id="bottleOz">Ounces</option>
                                 <option value="ml" id="bottleMl">Milliliters</option>
                             </select>
@@ -66,7 +66,7 @@
                             <label for="breastAmt">Amount</label>
                         </div>
                         <div class="input-field col s2">
-                            <select for="breastMeasurement">
+                            <select for="breastMeasurement" id="breastMeasure">
                                 <option value="oz" id="breastOz">Ounces</option>
                                 <option value="ml" id="breastMl">Milliliters</option>
                             </select>
@@ -88,18 +88,38 @@
                                 <span class="type">Poop</span>
                             </label>
                         </div>
-                        <div class="input-field col s4">
-                            <a href="#" class="waves-effect waves-light btn red reset">Reset  <i class="material-icons right">clear_all</i></a>
+                        <div class="input-field col s2">
+                            <a href="#" class="waves-effect waves-light btn orange update-btn">Update Item <i class="material-icons right">mode_edit</i></a>
                         </div>
-                        <div class="input-field col s4">
-                            <a href="#" class="waves-effect waves-light btn add-btn ">Submit  <i class="material-icons right">send</i></a>
+                        <div class="input-field col s2">
+                            <a href="#" class="waves-effect waves-light btn red delete-btn">Delete Item <i class="material-icons right">delete</i></a>
+                        </div>
+                        <div class="input-field col s2">
+                            <a href="#" class="waves-effect waves-light btn blue reset">Reset  <i class="material-icons right">clear_all</i></a>
+                        </div>
+                        <div class="input-field col s2">
+                            <button type="submit" class="waves-effect waves-light btn add-btn"> Submit <i class="material-icons right">send</i></button>
                         </div>
                     </div>
                 </form>
             </div>
         </div> <!-- end form card -->
         <div class="output">
-
+            <div class="card">
+                <div class="card-content feedContent noshow">
+                    <table class="highlight responsive-table">
+                        <thead id="t-head">
+                            <tr id="title">
+                                <th>Time</th>
+                                <th>Formula</th>
+                                <th>Breast Milk</th>
+                                <th>Pee</th>
+                                <th>Poop</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>  <!-- end container -->
 
