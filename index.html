@@ -14,7 +14,7 @@
         <div class="nav-wrapper">
             <a href="#" class="brand-logo center">Baby Trackr</a>
             <ul id="nav-mobile" class="right">
-                <li><a href="#" class="waves-effect waves-light btn red lighten-3 clear-btn"><i class="material-icons left">delete_forever</i>Clear All</a></li>
+                <li><a href="#" class="waves-effect waves-light btn red lighten-3 clear-btn"><i class="material-icons right">delete_forever</i>Clear All</a></li>
             </ul>
         </div>
     </nav>
@@ -88,16 +88,16 @@
                                 <span class="type">Poop</span>
                             </label>
                         </div>
-                        <div class="input-field col s2">
+                        <!-- <div class="input-field col s2">
                             <a href="#" class="waves-effect waves-light btn orange update-btn">Update Item <i class="material-icons right">mode_edit</i></a>
                         </div>
                         <div class="input-field col s2">
                             <a href="#" class="waves-effect waves-light btn red delete-btn">Delete Item <i class="material-icons right">delete</i></a>
-                        </div>
-                        <div class="input-field col s2">
+                        </div> -->
+                        <div class="input-field col s4">
                             <a href="#" class="waves-effect waves-light btn blue reset">Reset  <i class="material-icons right">clear_all</i></a>
                         </div>
-                        <div class="input-field col s2">
+                        <div class="input-field col s4">
                             <button type="submit" class="waves-effect waves-light btn add-btn"> Submit <i class="material-icons right">send</i></button>
                         </div>
                     </div>
@@ -108,18 +108,49 @@
             <div class="card">
                 <div class="card-content feedContent noshow">
                     <table class="highlight responsive-table">
-                        <thead id="t-head">
-                            <tr id="title">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
                                 <th>Time</th>
                                 <th>Formula</th>
                                 <th>Breast Milk</th>
                                 <th>Pee</th>
                                 <th>Poop</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
+                        <tbody class="feedOutput">
+
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td><strong>Daily Totals</strong></td>
+                                <td></td>
+                                <td>12oz or 360ml</td>
+                                <td>90ml or 3oz</td>
+                                <td>4x💦</td>
+                                <td>2x💩</td>      
+                                <td></td>              
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
+        </div>
+        <!-- <div class="card">
+            <div class="card-content">
+                <table>
+                    <thead>
+                        <h4>Hello World</h4>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>hello</td>
+                            <td>world</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> -->
         </div>
     </div>  <!-- end container -->
 

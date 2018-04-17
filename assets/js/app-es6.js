@@ -34,7 +34,7 @@ const IOCtrl = (() => {
             {id: 1, date: 'Apr 10, 2018', time: '01:50 PM', formula: false, formulaAmt: null, formulaMeasure: 'oz', breast: true, breastAmt: 1, breastMeasure: 'oz', pee: true, poop: false},
             {id: 2, date: 'Apr 21, 2018', time: '12:50 PM', formula: true, formulaAmt: 2, formulaMeasure: 'oz', breast: false, breastAmt: null, breastMeasure: 'oz', pee: false, poop: true},
         ],
-        currentDay: null,
+        currentItem: null,
         totalFormulaAmt: 0,
         totalBreastAmt: 0,
         totalPee: 0,
@@ -44,6 +44,9 @@ const IOCtrl = (() => {
     return {
         getData: () => {
             return data.items;
+        },
+        addFeed: function(date, time, formula, formulaAmt, formulaMeasure, breast, breastAmt, breastMeasure, pee, poop){
+            console.log(date);
         },
         logdata: () => {
             return data;
@@ -61,29 +64,15 @@ const UICtrl = (function() {
         timeEntry: '#time',
         formulaCheck: '#formula',
         breastCheck: '#breast',
-        formulaAmt: '#formulaAmt',
-        breastAmt: '#breastAmt',
-        formulaMeasurement: '#formulaMeasurement',
-        breastMeasurement: '#breastMeasurement',
+        formulaAmount: '#formulaAmt',
+        breastAmount: '#breastAmt',
+        formulaMeasurement: '#formulaMeasure',
+        breastMeasurement: '#breastMeasure',
         peeCheck: '#pee',
         poopCheck: '#poop',
-        output: ".output"
+        output: ".feedContent"
     }
     return {
-        getIOInput: () => {
-            return {
-                dateEntry:document.querySelector(UISelectors.dateEntry).value,
-                timeEntry:document.querySelector(UISelectors.timeEntry).value,
-                formula:document.querySelector(UISelectors.formulaCheck).value,
-                formulaAmt:document.querySelector(UISelectors.formulaAmt).value,
-                formulaMeasure:document.querySelector(UISelectors.formulaMeasurement).value,
-                breast:document.querySelector(UISelectors.breastCheck).value,
-                breastAmt:document.querySelector(UISelectors.breastAmt).value,
-                breastMeasure:document.querySelector(UISelectors.breastMeasurement).value,
-                pee:document.querySelector(UISelectors.peeCheck).value,
-                poop:document.querySelector(UISelectors.poopCheck).value
-            }
-        },
         populateOutput: (items) => {
             let html = '';
             //loop through each item and check if date is same
@@ -93,6 +82,20 @@ const UICtrl = (function() {
             // insert items into DOM
             document.querySelector(UISelectors.output).textContent = html;
         },
+        getIOInput: () => {
+            return {
+                dateEntry:document.querySelector(UISelectors.dateEntry).value,
+                timeEntry:document.querySelector(UISelectors.timeEntry).value,
+                formula:document.querySelector(UISelectors.formulaCheck).value,
+                formulaAmt:document.querySelector(UISelectors.formulaAmount).value,
+                formulaMeasure:document.querySelector(UISelectors.formulaMeasurement).value,
+                breast:document.querySelector(UISelectors.breastCheck).value,
+                breastAmt:document.querySelector(UISelectors.breastAmount).value,
+                breastMeasure:document.querySelector(UISelectors.breastMeasurement).value,
+                pee:document.querySelector(UISelectors.peeCheck).value,
+                poop:document.querySelector(UISelectors.poopCheck).value
+            }
+        },
         //public methods
         getSelectors: () => {
             return UISelectors;
@@ -100,13 +103,42 @@ const UICtrl = (function() {
     }
 })();
 //App controller
-const App = (function (IOCtrl, UICtrl){
+const App = ((IOCtrl, UICtrl) => {
     //load event listeners
     const loadEvents = () => {
         // get UISelectors List
         const UISelectors = UICtrl.getSelectors();
         //submit item button
-        document.querySelector(UISelectors.submitBtn).addEventListener('click', console.log('Submit Clicked'));
+        document.querySelector(UISelectors.submitBtn).addEventListener('click', itemAddSubmit);
+    }
+    //add item submit function
+    const itemAddSubmit = (e) => {
+        //get ui selectors
+        const UISelectors = UICtrl.getSelectors();
+        const input = UICtrl.getIOInput();
+        //get form inputs
+        const date = document.querySelector(UISelectors.dateEntry).value;
+        const time = document.querySelector(UISelectors.timeEntry).value;
+        const formula = document.querySelector(UISelectors.formulaCheck).checked;
+        const formulaAmt = document.querySelector(UISelectors.formulaAmt).value;
+        const formulaMeasure = document.querySelector(UISelectors.formulaMeasure).value;
+        const breast = document.querySelector(UISelectors.breastCheck).checked;
+        const breastAmt = document.querySelector(UISelectors.breastAmt).value;
+        const breastMeasure = document.querySelector(UISelectors.breastMeasure).value;
+        const pee = document.querySelector(UISelectors.peeCheck).checked;
+        const poop = document.querySelector(UISelectors.poopCheck).checked;
+        if(input.date !== '' && input.time !== ''){
+            const newFeed = IOCtrl.addFeed(input.date, input.time, input.formula, input.formulaAmt, input.formulaMeasure, input.breast, input.breastAmt, input.breastMeasure, input.pee, input.poop);
+            //add feed to UI output table
+            UICtrl.addNewFeed(newFeed);
+        }
+        e.preventDefault();
+    }
+    //public methods
+    return {
+        init: () => {
+            loadEvents();
+        }
     }
 })(IOCtrl, UICtrl);
 
