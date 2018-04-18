@@ -30,11 +30,6 @@ function Feed(id, date, time, formula, formulaAmt, formulaMeasure, breast, breas
     this.pee = pee;
     this.poop = poop;
 }
-//totals calculator
-function getTotals() {
-    let total = 0;
-
-}
 //UI constructor
 function UI(){
 }
@@ -58,11 +53,23 @@ UI.prototype.addFeedToList = (feed) => {
             ${feed.breast ? `<td>${feed.breastAmt}${feed.breastMeasure} </td>` : '<td>None</td>'}   
             ${feed.pee ? '<td>💦</td>' : '<td>None</td>'}
             ${feed.poop ? '<td>💩</td>' : '<td>None</td>'}
+            <td class="noshow">${feed.id}</td>
             <td><i class="material-icons item-delete">delete</i></td>
     `;
     tableBody.appendChild(tableRow);
     output.classList.remove('noshow');        
 }
+UI.prototype.getTotals = (feed) => {
+    let formulaTotal = 0;
+    let breastTotal = 0;
+    let peeTotal = 0;
+    let poopTotal = 0;
+    //if formula checked get totals for date
+    if(feed.formula && feed.date){
+
+    }
+}
+//show alert message
 UI.prototype.showAlert = (message, className) => {
     //create div
     const div = document.createElement('div');
@@ -80,19 +87,24 @@ UI.prototype.showAlert = (message, className) => {
         document.querySelector('.alert').remove();
     },3000);
 }
+//delete feed from list
 UI.prototype.deleteFeed = (target) => {
     if(target.className === 'material-icons item-delete'){
-        // console.log(target.parentElement.parentElement);
-        target.parentElement.parentElement.remove();
-    }
+        target.parentElement.parentElement.remove(); 
+    } 
 }
+//remove all feeds
 UI.prototype.clearAll = () => {
     const feedOutput = document.querySelector('.feedOutput');
-    console.log(feedOutput);
+    // console.log(feedOutput);
     while(feedOutput.firstChild){
         feedOutput.removeChild(feedOutput.firstChild);
     }
+    //select output element
+    const output = document.querySelector('.feedContent'); 
+    output.classList.add('noshow');
 }
+//reset form fields
 UI.prototype.clearFields = () => {
     document.getElementById('date').value = '';
     document.getElementById('time').value = '';
@@ -103,12 +115,53 @@ UI.prototype.clearFields = () => {
     document.getElementById('pee').checked = false;
     document.getElementById('poop').checked = false;            
 }
-UI.prototype.editFeed = (target) => {
-    if(target.className === 'material-icons item-edit'){
-
-    }
+//add local storage
+function Store(){
 }
-
+Store.prototype.getFeeds = () => {
+    let feeds;
+    // console.log(feeds)
+    if(localStorage.getItem('feeds') === null){
+        feeds = [];
+        // console.log(feeds);
+    } else {
+        feeds = JSON.parse(feeds = localStorage.getItem('feeds'));
+    }
+    return feeds;
+}
+Store.prototype.displayFeeds = () => {
+    const store = new Store();
+    let feeds = store.getFeeds();
+    feeds.forEach((feed) => {
+        const ui = new UI;
+        ui.addFeedToList(feed);
+    });
+    return feeds;
+}
+Store.prototype.addFeed = (feed) => {
+    const store = new Store();
+    const feeds = store.getFeeds();
+    for(var i = 0; i < feeds.length; i++){
+        let id = feeds[i];
+    }
+    feeds.push(feed);
+    localStorage.setItem('feeds', JSON.stringify(feeds));
+}
+Store.prototype.removeFeed = (currentItem) => {
+    const store = new Store();
+    let feeds = store.getFeeds();
+    feeds.forEach((feed, index) => {
+        if(feed.id === currentItem){
+            feeds.splice(index, 1);
+        }
+    });
+    localStorage.setItem('feeds', JSON.stringify(feeds));
+}
+Store.prototype.removeAllFeeds = () => {
+    localStorage.removeItem('feeds');
+}
+//event listener to display feeds from local store when page loads
+document.addEventListener('DomContentLoaded', Store.prototype.displayFeeds());
 //event listener for adding feed event
 document.getElementById('feed-form').addEventListener('submit', (e) => {
     //get form values
@@ -122,13 +175,14 @@ document.getElementById('feed-form').addEventListener('submit', (e) => {
             breastMeasure = document.getElementById('breastMeasure').value,
             pee = document.getElementById('pee').checked,
             poop = document.getElementById('poop').checked;
-    //logic for creating and appending new id's to each feed event
-    let id = 0;
-    
+    // //creating and appending new id's to each feed event
+    // let id = (date + time).replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\s]/g,'');
+    let id = Math.floor(Date.now() / 1000);
     //instantiate new Feed event
     const feed = new Feed(id, date, time, formula, formulaAmt, formulaMeasure, breast, breastAmt, breastMeasure, pee, poop)
-    //instantiate new UI
+    //instantiate new UI and Store
     const ui = new UI();
+    const store = new Store();
     //validate form
     //check date time
     if(date === '' || time === ''){
@@ -139,13 +193,13 @@ document.getElementById('feed-form').addEventListener('submit', (e) => {
         ui.showAlert('Please fill in all fields', 'card-panel red darken-1 white-text');
     } else {
         ui.addFeedToList(feed);
+        store.addFeed(feed);
         //show success message
         ui.showAlert('Feeding successfully added!', 'card-panel green darken-1 white-text');
         ui.clearFields();
     }
     e.preventDefault();
 });
-
 //event listener for reset all fields
 document.querySelector('.reset').addEventListener('click', (e) => {
     const ui = new UI();
@@ -153,24 +207,28 @@ document.querySelector('.reset').addEventListener('click', (e) => {
     // console.log('reset button clicked');
     e.preventDefault();
 });
-
 //event listener for delete
 //get parent element for dynamically added feedings
 document.querySelector('.feedOutput').addEventListener('click', (e) => {
-    //new UI
+    //new UI and Store
     const ui = new UI();
-    //call ui delete book function and pass the event target
+    const store = new Store();
+    //call ui delete feed function and pass the event target
     // console.log(e.target);
     ui.deleteFeed(e.target);
+    // console.log(e.target.parentElement.previousElementSibling.textContent);
+    store.removeFeed(parseInt(e.target.parentElement.previousElementSibling.textContent));
     //show delete message
-    ui.showAlert('Feed removed!', 'card-panel teal darken-1 white-text')
+    ui.showAlert('Feed removed!', 'card-panel teal darken-1 white-text');
     e.preventDefault();
 });
 //event listener for delete all feed events
 document.querySelector('.clear-btn').addEventListener('click', () => {
     const ui = new UI();
+    const store = new Store();
     ui.clearAll();
-    ui.showAlert('All feeding events removed!', 'card-panel red darken-1 white-text')
+    ui.showAlert('All feeding events removed!', 'card-panel red darken-1 white-text');
+    store.removeAllFeeds();
     const output = document.querySelector('.feedContent');    
     output.classList.add('noshow');            
 });
