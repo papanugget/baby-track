@@ -17,16 +17,16 @@ $(document).ready(function(){
     $('.timepicker').timepicker();
 });
 //feed event constructor
-function Feed(id, date, time, formula, formulaAmt, formulaMeasure, breast, breastAmt, breastMeasure, pee, poop){
+function Feed(id, date, time, formula, formulaAmt,  breast, breastAmt, pee, poop){
     this.id = id;
     this.date = date;
     this.time = time;
     this.formula = formula;
     this.formulaAmt = formulaAmt;
-    this.formulaMeasure = formulaMeasure;
+    // this.formulaMeasure = formulaMeasure;
     this.breast = breast;
     this.breastAmt = breastAmt;
-    this.breastMeasure = breastMeasure;
+    // this.breastMeasure = breastMeasure;
     this.pee = pee;
     this.poop = poop;
 }
@@ -37,10 +37,6 @@ function UI(){
 UI.prototype.addFeedToList = (feed) => {
      //select output element
     const output = document.querySelector('.feedContent');
-    //create row for date header
-    const dateHeader = document.createElement('tr');
-    //get date for header
-    dateHeader.innerHTML = `<h4>${feed.date}</h4>`;
     //create table body
     const tableBody = document.querySelector('.feedOutput');
     //create table row for feed data
@@ -49,8 +45,8 @@ UI.prototype.addFeedToList = (feed) => {
     tableRow.innerHTML = `
             <td>${feed.date}</td>
             <td>${feed.time}</td>
-            ${feed.formula ? `<td>${feed.formulaAmt}${feed.formulaMeasure}</td>` : '<td>None</td>'}
-            ${feed.breast ? `<td>${feed.breastAmt}${feed.breastMeasure} </td>` : '<td>None</td>'}   
+            ${feed.formula ? `<td>${feed.formulaAmt}oz.</td>` : '<td>None</td>'}
+            ${feed.breast ? `<td>${feed.breastAmt}oz. </td>` : '<td>None</td>'}   
             ${feed.pee ? '<td>💦</td>' : '<td>None</td>'}
             ${feed.poop ? '<td>💩</td>' : '<td>None</td>'}
             <td class="noshow">${feed.id}</td>
@@ -59,15 +55,23 @@ UI.prototype.addFeedToList = (feed) => {
     tableBody.appendChild(tableRow);
     output.classList.remove('noshow');        
 }
-UI.prototype.getTotals = (feed) => {
-    let formulaTotal = 0;
-    let breastTotal = 0;
-    let peeTotal = 0;
-    let poopTotal = 0;
-    //if formula checked get totals for date
-    if(feed.formula && feed.date){
-
-    }
+UI.prototype.showTotals = (date) => {
+    //select output element
+    const totalsRow = document.querySelector('.totalsRow');
+    //get feeds on display / in storage
+    const store = new Store();
+    const o = store.getTotals(date);
+    totalsRow.innerHTML = `
+        <td>Totals for: <strong>${date}<strong></td>
+        <td class="noshow">${o.count}</td>
+        <td>Total Formula: <strong>${o.formulaAmt}oz.</strong></td>
+        <td>Total Breast Milk: <strong>${o.breastAmt}oz.</strong></td>
+        <td>Total Pees: <strong>${o.pee}x</strong> 💦</td>
+        <td>Total Poops: <strong>${o.poop}x</strong> 💩</td>
+    `;
+    const output = document.querySelector('.feedContent');
+    //insert after output
+    output.appendChild(totalsRow);
 }
 //show alert message
 UI.prototype.showAlert = (message, className) => {
@@ -96,7 +100,6 @@ UI.prototype.deleteFeed = (target) => {
 //remove all feeds
 UI.prototype.clearAll = () => {
     const feedOutput = document.querySelector('.feedOutput');
-    // console.log(feedOutput);
     while(feedOutput.firstChild){
         feedOutput.removeChild(feedOutput.firstChild);
     }
@@ -113,21 +116,38 @@ UI.prototype.clearFields = () => {
     document.getElementById('breast').checked = false;
     document.getElementById('breastAmt').value = '';
     document.getElementById('pee').checked = false;
-    document.getElementById('poop').checked = false;            
+    document.getElementById('poop').checked = false;  
+    document.getElementById('dateTotal').value = '';          
 }
 //add local storage
 function Store(){
 }
 Store.prototype.getFeeds = () => {
     let feeds;
-    // console.log(feeds)
     if(localStorage.getItem('feeds') === null){
         feeds = [];
-        // console.log(feeds);
     } else {
         feeds = JSON.parse(feeds = localStorage.getItem('feeds'));
     }
     return feeds;
+}
+Store.prototype.getTotals = (date) => {
+    const store = new Store();
+    const feeds = store.getFeeds();
+    if(feeds)
+    return feeds.reduce((o, r) => {
+        if(r.date != date) return o;
+        o.count = (o.count || 0) +1;
+        o.formula = o.formula || r.formula;
+        o.formulaAmt = (o.formulaAmt || 0) + (r.formulaAmt);
+        o.breast = o.breast || r.breast;
+        o.breastAmt = (o.breastAmt || 0) + (r.breastAmt);
+        r.pee = r.pee ? 1 : 0;
+        o.pee = (o.pee || 0) + (+r.pee);
+        r.poop = r.poop ? 1 : 0;
+        o.poop = (o.poop || 0) + (+r.poop);
+        return o;
+    }, {});
 }
 Store.prototype.displayFeeds = () => {
     const store = new Store();
@@ -141,9 +161,6 @@ Store.prototype.displayFeeds = () => {
 Store.prototype.addFeed = (feed) => {
     const store = new Store();
     const feeds = store.getFeeds();
-    for(var i = 0; i < feeds.length; i++){
-        let id = feeds[i];
-    }
     feeds.push(feed);
     localStorage.setItem('feeds', JSON.stringify(feeds));
 }
@@ -168,18 +185,18 @@ document.getElementById('feed-form').addEventListener('submit', (e) => {
     const   date = document.getElementById('date').value,
             time = document.getElementById('time').value,
             formula = document.getElementById('formula').checked,
-            formulaAmt = document.getElementById('formulaAmt').value,
-            formulaMeasure = document.getElementById('formulaMeasure').value,
+            formulaAmt = Number(document.getElementById('formulaAmt').value),
+            // formulaMeasure = document.getElementById('formulaMeasure').value,
             breast = document.getElementById('breast').checked,
-            breastAmt = document.getElementById('breastAmt').value,          
-            breastMeasure = document.getElementById('breastMeasure').value,
+            breastAmt = Number(document.getElementById('breastAmt').value), 
+            // breastMeasure = document.getElementById('breastMeasure').value,
             pee = document.getElementById('pee').checked,
             poop = document.getElementById('poop').checked;
     // //creating and appending new id's to each feed event
     // let id = (date + time).replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\s]/g,'');
     let id = Math.floor(Date.now() / 1000);
     //instantiate new Feed event
-    const feed = new Feed(id, date, time, formula, formulaAmt, formulaMeasure, breast, breastAmt, breastMeasure, pee, poop)
+    const feed = new Feed(id, date, time, formula, formulaAmt, breast, breastAmt, pee, poop)
     //instantiate new UI and Store
     const ui = new UI();
     const store = new Store();
@@ -204,7 +221,6 @@ document.getElementById('feed-form').addEventListener('submit', (e) => {
 document.querySelector('.reset').addEventListener('click', (e) => {
     const ui = new UI();
     ui.clearFields();
-    // console.log('reset button clicked');
     e.preventDefault();
 });
 //event listener for delete
@@ -214,9 +230,7 @@ document.querySelector('.feedOutput').addEventListener('click', (e) => {
     const ui = new UI();
     const store = new Store();
     //call ui delete feed function and pass the event target
-    // console.log(e.target);
     ui.deleteFeed(e.target);
-    // console.log(e.target.parentElement.previousElementSibling.textContent);
     store.removeFeed(parseInt(e.target.parentElement.previousElementSibling.textContent));
     //show delete message
     ui.showAlert('Feed removed!', 'card-panel teal darken-1 white-text');
@@ -232,3 +246,130 @@ document.querySelector('.clear-btn').addEventListener('click', () => {
     const output = document.querySelector('.feedContent');    
     output.classList.add('noshow');            
 });
+//event listener for get totals for day
+document.querySelector('.date-btn').addEventListener('click', (e) => {
+    const ui = new UI();
+    const store = new Store();
+    const feeds = store.getFeeds();
+    const selectDate = document.querySelector('#dateTotal').value;
+    feeds.every((date) => {
+        if(selectDate === '' || !selectDate ){
+            ui.showAlert('Please select a valid date', 'card-panel red darken-1 white-text');
+            return false;
+        } else {
+            ui.showTotals(selectDate);
+            ui.clearFields();
+        }
+    });
+    e.preventDefault();
+});
+
+// function summariseFeeding(summary, currentFeeding){
+//         const {
+//             date,
+//             formulaAmt,
+//             breastAmt,
+//             pee,
+//             poop
+//         } = currentFeeding;
+    
+//         const currentAmt = summary[date] || 0;            // get current value for the given date, or default to 0 for new date
+//         const newFormulaAmt     = currentAmt + Number(formulaAmt); // add the current item's amount to the current value
+//         const newBreastAmt   = currentAmt + Number(breastAmt);
+//         function peeAmt(currentAmt, pee){
+//             let total;
+//             if(pee === true){
+//                 return 1;
+//             } else {
+//                 return 0;
+//             }
+//             total = currentAmt + pee
+//             console.log(total);
+//         };
+//         const poopAmt = currentAmt + poop;
+//         // console.log(poopAmt);
+//         summary[date]       = newFormulaAmt, newBreastAmt, peeAmt, poopAmt;                     // store the combined value in the date key
+//     }
+//     const feeds = Store.prototype.getFeeds();
+//     const summary = {};                                 // create an empty object to store the summary in
+//     feeds.map(summariseFeeding.bind(true, summary)); // map through each of the items in the array and merge anything with the same date
+//     console.table(summary);
+
+// let summary = {};
+    // const currentFeed = {
+    //     date, 
+    //     formulaAmt,
+    //     breastAmt,
+    //     pee,
+    //     poop
+    // };
+    // const currentAmount = summary[date] || 0;
+    // const newFormulaAmt = currentAmount + formulaAmt;
+    // const newBreastAmt = currentAmount + breastAmt;
+    // const peeAmt = currentAmount + pee;
+    // const poopAmt = currentAmount + poop;
+    // summary[date] = newFormulaAmt, newBreastAmt, peeAmt, poopAmt;
+    // feeds.map(getTotals.bind(true, summary));
+    // console.table(summary);
+    // loop thru feeds and check if dates on each element matches
+    // let match = [];
+    // for(let i = 0; i < feeds.length; i++){
+    //     if(feeds.indexOf(feeds[i].date === i.date)){
+    //         match.push(feeds[i]);
+    //     }
+    // console.table(match);
+    // }
+    // function summariseFeeding(summary, currentFeeding){
+    //     const {
+    //         date,
+    //         formulaAmount
+    //     } = currentFeeding;
+    
+    //     const currentAmount = summary[date] || 0;            // get current value for the given date, or default to 0 for new date
+    //     const newAmount     = currentAmount + formulaAmount; // add the current item's amount to the current value
+    //     summary[date]       = newAmount;                     // store the combined value in the date key
+    // }
+    
+    // const summary = {};                                 // create an empty object to store the summary in
+    // feeds.map(summariseFeeding.bind(true, summary)); // map through each of the items in the array and merge anything with the same date
+    // console.table(summary);
+// UI.prototype.getTotals = (feed) => {
+//     let formulaTotal = 0;
+//     let breastTotal = 0;
+//     let peeTotal = 0;
+//     let poopTotal = 0;
+//     //if formula checked get totals for date
+//     if(feed.formula && feed.date){
+
+//     }
+// }
+
+  
+//   function aggregate(date){
+//     const store = new Store();
+//     const feeds = store.getFeeds();
+//     let feedsReturn = {};
+//     return feeds.reduce((o, r)=>{
+//       if(r.date != date) return o;
+//       o.count = (o.count || 0) +1;
+//       o.formula = o.formula || r.formula;
+//       o.formulaAmt = (o.formulaAmt || 0)+(+r.formulaAmt);
+//       o.breast = o.breast || r.breast;
+//       o.breastAmt = (o.breastAmt || 0)+(+r.breastAmt);
+//       if(r.pee){
+//           r.pee = 1;
+//       } else {
+//           r.pee = 0;
+//       };
+//       o.pee = (o.pee || 0) + (+r.pee);
+//       if(r.poop){
+//           r.poop = 1;
+//       } else {
+//           r.poop = 0;
+//       }
+//       o.poop = (o.poop || 0) + (+r.poop);
+//       return o;
+//     },{});
+//   }
+  
+//   console.table(aggregate("Apr 20, 2018"))

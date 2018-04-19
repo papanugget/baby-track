@@ -4,11 +4,10 @@ html, body {
 }
 body {
     background-image: url('../img/baby.jpg');
-    background-size: cover;
+    background-size: 100% auto;
     background-repeat: no-repeat;
     background-position: left top;
 }
-
 .noshow {
     display: none;
 }

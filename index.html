@@ -44,15 +44,15 @@
                             </label>
                         </div>
                         <div class="input-field col s2">
-                            <input type="number" min="0" id="formulaAmt">
+                            <input type="number" min="0" step="0.01" id="formulaAmt">
                             <label for="formulaAmt">Amount</label>
                         </div>
                         <div class="input-field col s2">
-                            <select for="formulaMeasurement" id="formulaMeasure">
+                            <!-- <select for="formulaMeasurement" id="formulaMeasure">
                                 <option value="oz" id="bottleOz">Ounces</option>
                                 <option value="ml" id="bottleMl">Milliliters</option>
-                            </select>
-                            <label>Measurement</label>
+                            </select> -->
+                            <label>Ounces</label>
                         </div>
                         <div class="input-field col s2">
                             <label for="breast">
@@ -62,15 +62,16 @@
                             </label>
                         </div>
                         <div class="input-field col s2">
-                            <input type="number" min="0" id="breastAmt">
+                            <input type="number" min="0" step="0.01" id="breastAmt">
                             <label for="breastAmt">Amount</label>
                         </div>
                         <div class="input-field col s2">
-                            <select for="breastMeasurement" id="breastMeasure">
+                            
+                            <!-- <select for="breastMeasurement" id="breastMeasure">
                                 <option value="oz" id="breastOz">Ounces</option>
                                 <option value="ml" id="breastMl">Milliliters</option>
-                            </select>
-                            <label>Measurement</label>
+                            </select> -->
+                            <label>Ounces</label>
                         </div>
                     </div>
                     <div class="row">
@@ -114,23 +115,27 @@
                             </tr>
                         </thead>
                         <tbody class="feedOutput">
-
                         </tbody>
                         <tfoot class="footerContent">
-                            <!-- <tr>
-                                <td><strong>Daily Totals</strong></td>
-                                <td></td>
-                                <td>12oz or 360ml</td>
-                                <td>90ml or 3oz</td>
-                                <td>4x💦</td>
-                                <td>2x💩</td>      
-                                <td></td>              
-                            </tr> -->
+                            <tr>
+                                <h5>Daily Totals</h5>
+                            </tr>
+                            <tr>
+                                <div class="input-field col s6">
+                                    <input type="text" class="datepicker" id="dateTotal">
+                                    <label for="dateTotal">Select A Date</label>
+                                </div>
+                                <div class="col s6">
+                                    <button class="waves-effect waves-light btn date-btn">Submit</button>
+                                </div>
+                            </tr>
+                            <tr class="totalsRow  blue lighten-2 white-text ">
+
+                            </tr>
                         </tfoot>
                     </table>
                 </div>
             </div>
-        </div>
         </div>
     </div>  <!-- end container -->
 
