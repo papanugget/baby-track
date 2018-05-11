@@ -1,4 +1,4 @@
-console.log('Baby Trackr Connected!');
+// console.log('Baby Trackr Connected!');
 /*
 -use browser local storage
 -get values from field inputs
@@ -49,7 +49,7 @@ UI.prototype.addFeedToList = (feed) => {
             ${feed.breast ? `<td>${feed.breastAmt}oz. </td>` : '<td>None</td>'}   
             ${feed.pee ? '<td>💦</td>' : '<td>None</td>'}
             ${feed.poop ? '<td>💩</td>' : '<td>None</td>'}
-            <td class="noshow">${feed.id}</td>
+            <td class="hide">${feed.id}</td>
             <td><i class="material-icons item-delete">delete</i></td>
     `;
     tableBody.appendChild(tableRow);

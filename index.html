@@ -14,7 +14,7 @@
         <div class="nav-wrapper">
             <a href="#" class="brand-logo center">Baby Trackr</a>
             <ul id="nav-mobile" class="right">
-                <li><a href="#" class="waves-effect waves-light btn red lighten-3 clear-btn"><i class="material-icons right">delete_forever</i>Clear All</a></li>
+                <li><a href="#" class="waves-effect waves-light btn red lighten-3 clear-btn"><i class="material-icons right">delete_forever</i><span class="hide-on-med-and-down">Clear All</span></a></li>
             </ul>
         </div>
     </nav>
@@ -23,49 +23,49 @@
         <!-- form card -->
         <div class="card">
             <div class="card-content">
-                <span class="card-title">Track Your Baby's I/O</span>
+                <span class="card-title center-align">Track Your Baby's I/O</span>
                 <form id="feed-form">
                     <div class="row">
-                        <div class="input-field col s6">
+                        <div class="input-field col s12 m6 l6">
                                 <input type="text" class="datepicker" id="date">
                             <label for="date">Date</label>
                         </div>
-                        <div class="input-field col s6">
+                        <div class="input-field col s12 m6 l6">
                                 <input type="text" class="timepicker" id="time">
                             <label for="time">Time</label>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s2">
+                        <div class="input-field col s12 m4 l2">
                             <label for="formula">
                                 <input type="checkbox" id="formula"/>
                                 <span>🍼</span>
                                 <span class="type">Formula</span>
                             </label>
                         </div>
-                        <div class="input-field col s2">
+                        <div class="input-field col s12 m4 l2">
                             <input type="number" min="0" step="0.01" id="formulaAmt">
                             <label for="formulaAmt">Amount</label>
                         </div>
-                        <div class="input-field col s2">
+                        <div class="input-field col s12 m4 l2">
                             <!-- <select for="formulaMeasurement" id="formulaMeasure">
                                 <option value="oz" id="bottleOz">Ounces</option>
                                 <option value="ml" id="bottleMl">Milliliters</option>
                             </select> -->
                             <label>Ounces</label>
                         </div>
-                        <div class="input-field col s2">
+                        <div class="input-field col s12 m4 l2">
                             <label for="breast">
                                 <input type="checkbox" id="breast"/>
                                 <span>( . Y . )</span>
                                 <span class="type">Breast Milk</span>
                             </label>
                         </div>
-                        <div class="input-field col s2">
+                        <div class="input-field col s12 m4 l2">
                             <input type="number" min="0" step="0.01" id="breastAmt">
                             <label for="breastAmt">Amount</label>
                         </div>
-                        <div class="input-field col s2">
+                        <div class="input-field col s12 m4 l2">
                             
                             <!-- <select for="breastMeasurement" id="breastMeasure">
                                 <option value="oz" id="breastOz">Ounces</option>
@@ -75,25 +75,25 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s2">
+                        <div class="input-field col s12 m4 l2">
                             <label for="pee">
                                 <input type="checkbox" id="pee"/>
                                 <span>💦</span>
                                 <span class="type">Pee</span>
                             </label>
                         </div>
-                        <div class="input-field col s2">
+                        <div class="input-field col s12 m4 l2">
                             <label for="poop">
                                 <input type="checkbox" id="poop"/>
                                 <span>💩</span>
                                 <span class="type">Poop</span>
                             </label>
                         </div>
-                        <div class="input-field col s4">
-                            <a href="#" class="waves-effect waves-light btn blue reset">Reset  <i class="material-icons right">clear_all</i></a>
-                        </div>
-                        <div class="input-field col s4">
-                            <button type="submit" class="waves-effect waves-light btn add-btn"> Submit <i class="material-icons right">send</i></button>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12 m12 l12">
+                            <a href="#" class="waves-effect waves-light btn blue reset left-align">Reset  <i class="material-icons right">clear_all</i></a>
+                            <button type="submit" class="waves-effect waves-light btn add-btn right-align"> Submit <i class="material-icons right">send</i></button>
                         </div>
                     </div>
                 </form>
