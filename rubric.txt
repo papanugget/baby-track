@@ -1,0 +1,8 @@
+-break date row out of table header
+-insert date row into table head after static elements load
+-break row data out of table body
+
+-have logic to check if current date row is already there
+-if not create new table with new data
+-else insert row into current table
+-have row for daily totals
